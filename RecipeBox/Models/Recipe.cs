@@ -21,6 +21,63 @@ namespace RecipeBox.Models
       Id = id;
     }
 
+    public override bool Equals(System.Object otherRecipe)
+    {
+      if (!(otherRecipe is Recipe))
+      {
+        return false;
+      }
+      else
+      {
+        Recipe newRecipe = (Recipe) otherRecipe;
+        bool idEquality = this.Id == newRecipe.Id;
+        bool nameEquality = this.Name == newRecipe.Name;
+        bool ratingEquality = this.Rating == newRecipe.Rating;
+        bool ingredientsEquality = this.Ingredients == newRecipe.Ingredients;
+        bool instructionsEquality = this.Instructions == newRecipe.Instructions;
+        return (idEquality && nameEquality && ratingEquality && ingredientsEquality && instructionsEquality);
+      }
+    }
+
+    public override int GetHashCode()
+    {
+      return this.Id.GetHashCode();
+    }
+
+    public static void ClearAll()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM recipes;";
+      cmd.ExecuteNonQuery();
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+
+    // public void Save()
+    // {
+    //   MySqlConnection conn = DB.Connection();
+    //   conn.Open();
+    //   var cmd = conn.CreateCommand() as MySqlCommand;
+    //   cmd.CommandText = @"INSERT INTO recipes (name, rating, ingredients, instructions) VALUES (@name, @rating, @ingredients, @instructions);";
+    //   MySqlParameter recipe = new MySqlParameter();
+    //   recipe.ParameterName = "@recipe";
+    //   recipe.Value = this.Recipe;
+    //   cmd.Parameters.Add(recipe);
+    //   cmd.ExecuteNonQuery();
+    //   Id = (int) cmd.LastInsertedId;
+    //   conn.Close();
+    //   if (conn != null)
+    //   {
+    //     conn.Dispose();
+    //   }
+    // }
+    //
+
     // public void AddCategory(Category newCategory)
     // {
     //   MySqlConnection conn = DB.Connection();

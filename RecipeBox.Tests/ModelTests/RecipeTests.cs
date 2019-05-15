@@ -10,7 +10,7 @@ namespace RecipeBox.Tests
   {
     public void Dispose()
     {
-      // Recipe.ClearAll();
+      Recipe.ClearAll();
     }
 
     public RecipeTest()
