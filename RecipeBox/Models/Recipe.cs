@@ -182,5 +182,23 @@ namespace RecipeBox.Models
       }
       return newRecipe;
     }
+
+
+    public void DeleteRecipe()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM recipes WHERE id = @RecipeId; DELETE FROM recipes_categories WHERE recipe_id = @RecipeId;";
+      MySqlParameter recipeIdParameter = new MySqlParameter();
+      recipeIdParameter.ParameterName = "@RecipeId";
+      recipeIdParameter.Value = this.Id;
+      cmd.Parameters.Add(recipeIdParameter);
+      cmd.ExecuteNonQuery();
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
   }
 }

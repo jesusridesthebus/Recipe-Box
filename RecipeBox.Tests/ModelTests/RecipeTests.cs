@@ -92,7 +92,6 @@ namespace RecipeBox.Tests
       CollectionAssert.AreEqual(newList, result);
     }
 
-
     [TestMethod]
     public void GetCategories_ReturnsAllRecipeCategories_CategoryList()
     {
@@ -125,5 +124,23 @@ namespace RecipeBox.Tests
 
       CollectionAssert.AreEqual(testList, result);
     }
+
+
+    [TestMethod]
+    public void DeleteRecipe_DeletesRecipeAssociationsFromDatabase_RecipeList()
+    {
+      Category testCategory = new Category("Mer");
+      testCategory.Save();
+      Recipe testRecipe = new Recipe("test", 2, "test3", "test4");
+      testRecipe.Save();
+
+      testRecipe.AddCategory(testCategory);
+      testRecipe.DeleteRecipe();
+      List<Recipe> resultCategoryRecipes = testCategory.GetRecipes();
+      List<Recipe> testCategoryRecipes = new List<Recipe> {};
+
+      CollectionAssert.AreEqual(testCategoryRecipes, resultCategoryRecipes);
+    }
+
   }
 }
