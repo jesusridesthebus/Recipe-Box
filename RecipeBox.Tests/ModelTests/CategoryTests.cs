@@ -58,5 +58,22 @@ namespace RecipeBox.TestTools
       CollectionAssert.AreEqual(testList, result);
     }
 
+    [TestMethod]
+    public void GetRecipes_RetrievesAllRecipesWithCategory_RecipeList()
+    {
+      Category testCategory = new Category("Mer");
+      testCategory.Save();
+      Recipe newRecipeOne = new Recipe ("test", 2, "test3", "test4");
+      newRecipeOne.Save();
+      Recipe newRecipeTwo = new Recipe ("testTwo", 3, "testTwo3", "testTwo4");
+      newRecipeTwo.Save();
+
+      testCategory.AddRecipe(newRecipeOne);
+      List<Recipe> savedRecipes = testCategory.GetRecipes();
+      List<Recipe> testList = new List<Recipe> {newRecipeOne};
+      
+      CollectionAssert.AreEqual(testList, savedRecipes);
+    }
+
   }
 }
