@@ -44,9 +44,20 @@ namespace RecipeBox.Tests
 
       CollectionAssert.AreEqual(testList, result);
     }
-    // 
-    // [TestMethod]
-    // public void Save_AssignsIdtoObject
+
+    [TestMethod]
+    public void Save_AssignsIdtoObject_Id()
+    {
+      Recipe testRecipe = new Recipe("test", 2, "test3", "test4");
+
+      testRecipe.Save();
+      Recipe savedRecipe = Recipe.GetAll()[0];
+
+      int result = savedRecipe.Id;
+      int testId = testRecipe.Id;
+
+      Assert.AreEqual(testId, result);
+    }
 
     [TestMethod]
     public void GetAll_ReturnsRecipes_RecipeList()
