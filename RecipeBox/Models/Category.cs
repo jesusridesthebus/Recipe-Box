@@ -152,9 +152,6 @@ namespace RecipeBox.Models
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
       cmd.CommandText = @"SELECT * FROM categories WHERE id = (@searchId);";
-      // MySqlParameter searchId = new MySqlParameter();
-      // searchId.ParameterName = "@searchId";
-      // searchId.Value = id;
       cmd.Parameters.AddWithValue("@searchId", id);
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       int CategoryId = 0;
@@ -171,6 +168,22 @@ namespace RecipeBox.Models
         conn.Dispose();
       }
       return newCategory;
+    }
+
+    public void DeleteCategory()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      MySqlCommand cmd = new MySqlCommand("DELETE FROM categories WHERE id = @CategoryId; DELETE FROM recipes_categories WHERE category_id = @CategoryId;", conn);
+      MySqlParameter categoryIdParameter = new MySqlParameter();
+      categoryIdParameter.ParameterName = "@CategoryId";
+      categoryIdParameter.Value = this.Id;
+      cmd.Parameters.Add(categoryIdParameter);
+      cmd.ExecuteNonQuery();
+      if (conn != null)
+      {
+        conn.Close();
+      }
     }
 
   }

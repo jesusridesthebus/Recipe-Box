@@ -77,7 +77,6 @@ namespace RecipeBox.Tests
       CollectionAssert.AreEqual(testList, result);
     }
 
-
     [TestMethod]
     public void GetAll_ReturnsRecipes_RecipeList()
     {
@@ -91,6 +90,40 @@ namespace RecipeBox.Tests
       List<Recipe> result = Recipe.GetAll();
 
       CollectionAssert.AreEqual(newList, result);
+    }
+
+
+    [TestMethod]
+    public void GetCategories_ReturnsAllRecipeCategories_CategoryList()
+    {
+      Recipe testRecipe = new Recipe("test", 2, "test3", "test4");
+      testRecipe.Save();
+      Category testCategory1 = new Category("Mer");
+      testCategory1.Save();
+      Category testCategory2 = new Category("MerMer");
+      testCategory2.Save();
+
+      testRecipe.AddCategory(testCategory1);
+      List<Category> result = testRecipe.GetCategories();
+      List<Category> testList = new List<Category> {testCategory1};
+
+      CollectionAssert.AreEqual(testList, result);
+    }
+
+    [TestMethod]
+    public void AddCategory_AddsCategoryToRecipe_CategoryList()
+    {
+      Recipe testRecipe = new Recipe("test", 2, "test3", "test4");
+      testRecipe.Save();
+      Category testCategory = new Category("Mer");
+      testCategory.Save();
+
+      testRecipe.AddCategory(testCategory);
+
+      List<Category> result = testRecipe.GetCategories();
+      List<Category> testList = new List<Category>{testCategory};
+
+      CollectionAssert.AreEqual(testList, result);
     }
   }
 }

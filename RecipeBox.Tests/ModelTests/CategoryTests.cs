@@ -85,6 +85,23 @@ namespace RecipeBox.TestTools
 
       Assert.AreEqual(testCategory, foundCategory);
     }
+    
+    [TestMethod]
+    public void DeleteCategory_DeletesCategoryAssociationsFromDatabase_CategoryList()
+    {
+      Recipe testRecipe = new Recipe ("test", 2, "test3", "test4");
+      testRecipe.Save();
+      string testName = "Mer";
+      Category testCategory = new Category(testName);
+      testCategory.Save();
+
+      testCategory.AddRecipe(testRecipe);
+      testCategory.DeleteCategory();
+      List<Category> resultRecipeCategories = testRecipe.GetCategories();
+      List<Category> testRecipeCategories = new List<Category> {};
+
+      CollectionAssert.AreEqual(testRecipeCategories, resultRecipeCategories);
+    }
 
   }
 }
