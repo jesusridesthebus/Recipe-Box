@@ -85,7 +85,7 @@ namespace RecipeBox.TestTools
 
       Assert.AreEqual(testCategory, foundCategory);
     }
-    
+
     [TestMethod]
     public void DeleteCategory_DeletesCategoryAssociationsFromDatabase_CategoryList()
     {
@@ -102,6 +102,20 @@ namespace RecipeBox.TestTools
 
       CollectionAssert.AreEqual(testRecipeCategories, resultRecipeCategories);
     }
+
+    [TestMethod]
+    public void Edit_UpdatesCategoryInDatabase_String()
+    {
+      Category testCategory = new Category("Mer");
+      testCategory.Save();
+      string secondName = "Blerg";
+
+      testCategory.Edit(secondName);
+      string result = Category.Find(testCategory.Id).Name;
+
+      Assert.AreEqual(secondName, result);
+    }
+
 
   }
 }
