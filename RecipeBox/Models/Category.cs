@@ -146,5 +146,32 @@ namespace RecipeBox.Models
       return recipes;
     }
 
+    public static Category Find(int id)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * FROM categories WHERE id = (@searchId);";
+      // MySqlParameter searchId = new MySqlParameter();
+      // searchId.ParameterName = "@searchId";
+      // searchId.Value = id;
+      cmd.Parameters.AddWithValue("@searchId", id);
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      int CategoryId = 0;
+      string CategoryName = "";
+      while(rdr.Read())
+      {
+        CategoryId = rdr.GetInt32(0);
+        CategoryName = rdr.GetString(1);
+      }
+      Category newCategory = new Category(CategoryName, CategoryId);
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return newCategory;
+    }
+
   }
 }

@@ -71,8 +71,19 @@ namespace RecipeBox.TestTools
       testCategory.AddRecipe(newRecipeOne);
       List<Recipe> savedRecipes = testCategory.GetRecipes();
       List<Recipe> testList = new List<Recipe> {newRecipeOne};
-      
+
       CollectionAssert.AreEqual(testList, savedRecipes);
+    }
+
+    [TestMethod]
+    public void Find_ReturnsCategoryInDatabase_Category()
+    {
+      Category testCategory = new Category("merrr");
+      testCategory.Save();
+
+      Category foundCategory = Category.Find(testCategory.Id);
+
+      Assert.AreEqual(testCategory, foundCategory);
     }
 
   }
