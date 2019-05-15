@@ -152,5 +152,35 @@ namespace RecipeBox.Models
       }
       return categories;
     }
+
+    public static Recipe Find(int id)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * FROM recipes WHERE id = (@searchId);";
+      cmd.Parameters.AddWithValue("@searchId", id);
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      int recipeId = 0;
+      string recipeName = "";
+      int recipeRating = 0;
+      string recipeIngredients = "";
+      string recipeInstructions = "";
+      while(rdr.Read())
+      {
+        recipeId = rdr.GetInt32(0);
+        recipeName = rdr.GetString(1);
+        recipeRating = rdr.GetInt32(2);
+        recipeIngredients = rdr.GetString(3);
+        recipeInstructions = rdr.GetString(4);
+      }
+      Recipe newRecipe = new Recipe(recipeName, recipeRating, recipeIngredients, recipeInstructions, recipeId);
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return newRecipe;
+    }
   }
 }
