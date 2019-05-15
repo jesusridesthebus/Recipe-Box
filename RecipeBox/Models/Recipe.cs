@@ -201,5 +201,49 @@ namespace RecipeBox.Models
       }
     }
 
+    public void Edit(string newName, int newRating, string newIngredients, string newInstructions)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmdName = conn.CreateCommand() as MySqlCommand;
+      cmdName.CommandText = @"UPDATE recipes SET name = @newName WHERE id = @searchId;";
+      MySqlParameter searchId = new MySqlParameter();
+      searchId.ParameterName = "@searchId";
+      searchId.Value = Id;
+      cmdName.Parameters.Add(searchId);
+
+      Name = newName;
+      cmdName.Parameters.AddWithValue("@newName", newName);
+
+      Rating = newRating;
+      var cmdRating = conn.CreateCommand() as MySqlCommand;
+      cmdRating.CommandText = @"UPDATE recipes SET rating = @newRating WHERE id = @searchId;";
+      cmdRating.Parameters.Add(searchId);
+      cmdRating.Parameters.AddWithValue("@newRating", newRating);
+
+      Ingredients = newIngredients;
+      var cmdIngredients = conn.CreateCommand() as MySqlCommand;
+      cmdIngredients.CommandText = @"UPDATE recipes SET ingredients = @newIngredients WHERE id = @searchId;";
+      cmdIngredients.Parameters.Add(searchId);
+      cmdIngredients.Parameters.AddWithValue("@newIngredients", newIngredients);
+
+      Instructions = newInstructions;
+      var cmdInstructions = conn.CreateCommand() as MySqlCommand;
+      cmdInstructions.CommandText = @"UPDATE recipes SET instructions = @newInstructions WHERE id = @searchId;";
+      cmdInstructions.Parameters.Add(searchId);
+      cmdInstructions.Parameters.AddWithValue("@newInstructions", newInstructions);
+
+      cmdName.ExecuteNonQuery();
+      cmdRating.ExecuteNonQuery();
+      cmdIngredients.ExecuteNonQuery();
+      cmdInstructions.ExecuteNonQuery();
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+
   }
 }

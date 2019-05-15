@@ -125,7 +125,6 @@ namespace RecipeBox.Tests
       CollectionAssert.AreEqual(testList, result);
     }
 
-
     [TestMethod]
     public void DeleteRecipe_DeletesRecipeAssociationsFromDatabase_RecipeList()
     {
@@ -140,6 +139,18 @@ namespace RecipeBox.Tests
       List<Recipe> testCategoryRecipes = new List<Recipe> {};
 
       CollectionAssert.AreEqual(testCategoryRecipes, resultCategoryRecipes);
+    }
+
+    [TestMethod]
+    public void Edit_UpdatesRecipeInDatabase_String()
+    {
+      Recipe testRecipe = new Recipe("test", 2, "test3", "test4");
+      testRecipe.Save();
+
+      testRecipe.Edit("testFace", 2, "testFace3", "testFace4");
+      Recipe result =Recipe.Find(testRecipe.Id);
+
+      Assert.AreEqual(("testFace", 2, "testFace3", "testFace4"), (result.Name, result.Rating, result.Ingredients, result.Instructions));
     }
 
   }
