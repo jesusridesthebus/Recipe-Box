@@ -10,8 +10,8 @@ namespace RecipeBox.TestTools
   {
     public void Dispose()
     {
-      // Category.ClearAll();
-      // Item.ClearAll();
+      Category.ClearAll();
+      Recipe.ClearAll();
     }
 
     public CategoryTest()
@@ -40,5 +40,23 @@ namespace RecipeBox.TestTools
       List<Category> result = Category.GetAll();
       CollectionAssert.AreEqual(newList, result);
     }
+
+    [TestMethod]
+    public void CategoryConstructor_CreatesInstanceOfCategory_Category()
+    {
+      Category newCategory = new Category("test category");
+      Assert.AreEqual(typeof(Category), newCategory.GetType());
+    }
+
+    [TestMethod]
+    public void Save_SavesCategoryToDatabase_CategoryList()
+    {
+      Category testCategory = new Category("mer mer mer");
+      testCategory.Save();
+      List<Category> result = Category.GetAll();
+      List<Category> testList = new List<Category>{testCategory};
+      CollectionAssert.AreEqual(testList, result);
+    }
+
   }
 }
