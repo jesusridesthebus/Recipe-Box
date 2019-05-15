@@ -58,25 +58,51 @@ namespace RecipeBox.Models
       }
     }
 
-    // public void Save()
-    // {
-    //   MySqlConnection conn = DB.Connection();
-    //   conn.Open();
-    //   var cmd = conn.CreateCommand() as MySqlCommand;
-    //   cmd.CommandText = @"INSERT INTO recipes (name, rating, ingredients, instructions) VALUES (@name, @rating, @ingredients, @instructions);";
-    //   MySqlParameter recipe = new MySqlParameter();
-    //   recipe.ParameterName = "@recipe";
-    //   recipe.Value = this.Recipe;
-    //   cmd.Parameters.Add(recipe);
-    //   cmd.ExecuteNonQuery();
-    //   Id = (int) cmd.LastInsertedId;
-    //   conn.Close();
-    //   if (conn != null)
-    //   {
-    //     conn.Dispose();
-    //   }
-    // }
-    //
+    public static List<Recipe> GetAll()
+    {
+      List<Recipe> allRecipes = new List<Recipe> {};
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * FROM recipes;";
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      while(rdr.Read())
+      {
+        int recipeId = rdr.GetInt32(0);
+        string recipeName = rdr.GetString(1);
+        int recipeRating = rdr.GetInt32(2);
+        string recipeIngredients = rdr.GetString(3);
+        string recipeInstructions = rdr.GetString(4);
+        Recipe newRecipe = new Recipe(recipeName, recipeRating, recipeIngredients, recipeInstructions, recipeId);
+        allRecipes.Add(newRecipe);
+      }
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return allRecipes;
+    }
+
+    public void Save()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"INSERT INTO recipes (name, rating, ingredients, instructions) VALUES (@name, @rating, @ingredients, @instructions);";
+      cmd.Parameters.AddWithValue("@name", this.Name);
+      cmd.Parameters.AddWithValue("@rating", this.Rating);
+      cmd.Parameters.AddWithValue("@ingredients", this.Ingredients);
+      cmd.Parameters.AddWithValue("@instructions", this.Instructions);
+      cmd.ExecuteNonQuery();
+      Id = (int) cmd.LastInsertedId;
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+
 
     // public void AddCategory(Category newCategory)
     // {
