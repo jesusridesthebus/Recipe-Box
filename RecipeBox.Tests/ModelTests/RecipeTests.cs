@@ -153,5 +153,24 @@ namespace RecipeBox.Tests
       Assert.AreEqual(("testFace", 2, "testFace3", "testFace4"), (result.Name, result.Rating, result.Ingredients, result.Instructions));
     }
 
+    [TestMethod]
+    public void Search_SearchesAndReturnsFromDatabase_RecipeList()
+    {
+      Recipe testRecipe = new Recipe("Name", 4, "salt, butter, cheese, water, bacon", "Mix and consume");
+      testRecipe.Save();
+
+      Recipe testRecipeTwo = new Recipe("Love", 5, "optimism, spirituality, communication, lust", "Simmer for one year");
+      testRecipeTwo.Save();
+
+      // List<Recipe> newList = new List<Recipe> {testRecipe, testRecipeTwo};
+
+      Recipe result = Recipe.SearchForIngredient("spirituality");
+      Console.WriteLine(result);
+      Console.WriteLine(testRecipeTwo);
+
+      Assert.AreEqual(testRecipeTwo.Name, result.Name);
+
+    }
+
   }
 }
